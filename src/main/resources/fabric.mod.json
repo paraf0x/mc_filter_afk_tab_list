@@ -6,8 +6,8 @@
   "description": "Filters AFK players from the tab list. Press F6 to toggle.",
   "authors": ["paraf0x"],
   "contact": {
-    "sources": "https://github.com/paraf0x/afk-filter-mod",
-    "issues": "https://github.com/paraf0x/afk-filter-mod/issues"
+    "sources": "https://github.com/paraf0x/mc_filter_afk_tab_list",
+    "issues": "https://github.com/paraf0x/mc_filter_afk_tab_list/issues"
   },
   "icon": "assets/afk-filter/icon.png",
   "license": "MIT",
