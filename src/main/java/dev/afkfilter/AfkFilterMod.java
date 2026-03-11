@@ -54,8 +54,9 @@ public class AfkFilterMod implements ClientModInitializer {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             client.execute(() -> {
                 if (client.player != null) {
+                    String keyName = toggleKeyBinding.getBoundKeyLocalizedText().getString();
                     client.player.sendMessage(
-                            Text.literal("\u00a77[AFK Filter] \u00a7fMod geladen! F6 oder /afkfilter zum Togglen"),
+                            Text.literal("\u00a77[AFK Filter] \u00a7fLoaded! Press " + keyName + " or /afkfilter to toggle"),
                             false
                     );
                 }
@@ -77,7 +78,7 @@ public class AfkFilterMod implements ClientModInitializer {
     private void toggleFilter(MinecraftClient client) {
         filterEnabled = !filterEnabled;
         if (client.player != null) {
-            String status = filterEnabled ? "\u00a7aAN" : "\u00a7cAUS";
+            String status = filterEnabled ? "\u00a7aON" : "\u00a7cOFF";
             client.player.sendMessage(
                     Text.literal("\u00a77[AFK Filter] " + status),
                     true
