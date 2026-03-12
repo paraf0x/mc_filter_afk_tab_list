@@ -46,7 +46,7 @@ public class PlayerListHudMixin {
         }
 
         // Also check profile name
-        String profileName = entry.getProfile().getName();
+        String profileName = entry.getProfile().name();
         return config.matchesAfkPattern(profileName);
     }
 }
