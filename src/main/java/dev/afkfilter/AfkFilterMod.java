@@ -36,7 +36,7 @@ public class AfkFilterMod implements ClientModInitializer {
                         "key.afkfilter.toggle",
                         InputUtil.Type.KEYSYM,
                         GLFW.GLFW_KEY_F6,
-                        "key.categories.afkfilter"
+                        KeyBinding.Category.create(net.minecraft.util.Identifier.of(MOD_ID, "afkfilter"))
                 )
         );
 
