@@ -14,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,8 +37,8 @@ public class AfkFilterMod implements ClientModInitializer {
         toggleKeyBinding = KeyMappingHelper.registerKeyMapping(
                 new KeyMapping(
                         "key.afkfilter.toggle",
-                        InputConstants.Type.KEYSYM,
-                        GLFW.GLFW_KEY_F6,
+                        InputConstants.Type.KEYBOARD,
+                        InputConstants.KEY_F6,
                         category
                 )
         );
