@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "afk-filter-gametest",
+  "version": "1.0.0",
+  "name": "AFK Filter Gametests",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-client-gametest": ["dev.afkfilter.gametest.AfkFilterGameTest"]
+  },
+  "depends": {
+    "afk-filter": "*",
+    "fabric-client-gametest-api-v1": "*"
+  }
+}
