@@ -4,6 +4,7 @@ import dev.afkfilter.AfkFilterConfig;
 import dev.afkfilter.AfkFilterMod;
 import net.minecraft.client.gui.components.PlayerTabOverlay;
 import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,11 +29,25 @@ public class PlayerListHudMixin {
         }
 
         List<PlayerInfo> original = cir.getReturnValue();
+        if (config.sortMode()) {
+            cir.setReturnValue(AfkFilterMod.afkLast(original, entry -> isAfkPlayer(entry, config)));
+            return;
+        }
         List<PlayerInfo> filtered = original.stream()
                 .filter(entry -> !isAfkPlayer(entry, config))
                 .collect(Collectors.toList());
 
         cir.setReturnValue(filtered);
+    }
+
+    // Sort mode: AFK names in plain grey, dropping server colours so they read as inactive.
+    @Inject(method = "getNameForDisplay", at = @At("RETURN"), cancellable = true)
+    private void greyAfkNames(PlayerInfo entry, CallbackInfoReturnable<Component> cir) {
+        AfkFilterConfig config = AfkFilterMod.getConfig();
+        if (!AfkFilterMod.isFilterEnabled() || config == null || !config.sortMode() || !isAfkPlayer(entry, config)) {
+            return;
+        }
+        cir.setReturnValue(Component.literal(ChatFormatting.stripFormatting(cir.getReturnValue().getString())).withStyle(ChatFormatting.GRAY));
     }
 
     private boolean isAfkPlayer(PlayerInfo entry, AfkFilterConfig config) {

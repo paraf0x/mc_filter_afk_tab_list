@@ -17,6 +17,10 @@ import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 public class AfkFilterMod implements ClientModInitializer {
     public static final String MOD_ID = "afk-filter";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -74,6 +78,16 @@ public class AfkFilterMod implements ClientModInitializer {
                     toggleFilter(Minecraft.getInstance());
                     return 1;
                 })
+                .then(ClientCommands.literal("mode")
+                        .executes(context -> {
+                            context.getSource().sendFeedback(Component.literal(
+                                    "§7[AFK Filter] Mode: §f" + modeName() + "§7. Use /afkfilter mode hide or /afkfilter mode sort"));
+                            return 1;
+                        })
+                        .then(ClientCommands.literal(AfkFilterConfig.MODE_HIDE)
+                                .executes(context -> setMode(AfkFilterConfig.MODE_HIDE)))
+                        .then(ClientCommands.literal(AfkFilterConfig.MODE_SORT)
+                                .executes(context -> setMode(AfkFilterConfig.MODE_SORT))))
         );
     }
 
@@ -86,6 +100,31 @@ public class AfkFilterMod implements ClientModInitializer {
             );
         }
         LOGGER.info("AFK Filter toggled: {}", filterEnabled ? "enabled" : "disabled");
+    }
+
+    private static int setMode(String mode) {
+        config.mode = mode;
+        config.save();
+        Minecraft client = Minecraft.getInstance();
+        if (client.player != null) {
+            client.player.sendSystemMessage(Component.literal("§7[AFK Filter] Mode: §f" + modeName()));
+        }
+        return 1;
+    }
+
+    private static String modeName() {
+        return config.sortMode() ? "sort (AFK players at the end)" : "hide (AFK players hidden)";
+    }
+
+    /** Non-AFK entries first, then AFK entries, each group in its original order. */
+    public static <T> List<T> afkLast(List<T> entries, Predicate<T> isAfk) {
+        List<T> active = new ArrayList<>(entries.size());
+        List<T> afk = new ArrayList<>();
+        for (T entry : entries) {
+            (isAfk.test(entry) ? afk : active).add(entry);
+        }
+        active.addAll(afk);
+        return active;
     }
 
     public static boolean isFilterEnabled() {

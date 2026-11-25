@@ -15,6 +15,15 @@ public class AfkFilterConfig {
     public String afkPattern = "AFK";
     public boolean caseSensitive = false;
     public boolean enabledByDefault = true;
+    /** "hide" removes AFK players from the tab list, "sort" moves them to the end. */
+    public String mode = MODE_HIDE;
+
+    public static final String MODE_HIDE = "hide";
+    public static final String MODE_SORT = "sort";
+
+    public boolean sortMode() {
+        return MODE_SORT.equalsIgnoreCase(mode);
+    }
 
     public static AfkFilterConfig load() {
         Path configPath = FabricLoader.getInstance()

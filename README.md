@@ -1,11 +1,12 @@
 # AFK Filter
 
-A client-side Fabric mod that hides AFK players from the tab list.
+A client-side Fabric mod that hides AFK players from the tab list, or moves them to the end of it.
 
 ## Features
 
 - **Toggle with F6** - Quickly enable/disable the filter
 - **Client command** - Use `/afkfilter` to toggle
+- **Two modes** - `hide` removes AFK players, `sort` keeps them and lists them last
 - **Configurable pattern** - Change what counts as "AFK" in the config
 - **Case-insensitive** - Matches "AFK", "afk", "Afk", etc. by default
 - **Join notification** - Shows mod status when joining a server
@@ -21,6 +22,9 @@ A client-side Fabric mod that hides AFK players from the tab list.
 - Press **F6** to toggle the AFK filter on/off
 - Or type `/afkfilter` in chat
 - Status is shown in the action bar
+- `/afkfilter mode sort` keeps AFK players in the tab list and puts them after everyone else
+- `/afkfilter mode hide` hides them again (default)
+- `/afkfilter mode` shows the current mode. The mode is saved in the config file
 
 ## Configuration
 
@@ -30,7 +34,8 @@ Config file: `.minecraft/config/afk-filter.json`
 {
   "afkPattern": "AFK",
   "caseSensitive": false,
-  "enabledByDefault": true
+  "enabledByDefault": true,
+  "mode": "hide"
 }
 ```
 
@@ -39,11 +44,12 @@ Config file: `.minecraft/config/afk-filter.json`
 | `afkPattern` | Text pattern to match AFK players | `"AFK"` |
 | `caseSensitive` | Match exact case only | `false` |
 | `enabledByDefault` | Filter enabled on game start | `true` |
+| `mode` | `hide` removes AFK players, `sort` lists them last | `"hide"` |
 
 ## Requirements
 
-- Minecraft 1.21.4
-- Fabric Loader ≥0.15.0
+- Minecraft 26.3
+- Fabric Loader ≥0.19.5
 - Fabric API
 
 ## License
